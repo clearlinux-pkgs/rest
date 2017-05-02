@@ -6,7 +6,7 @@
 #
 Name     : rest
 Version  : 0.8.0
-Release  : 3
+Release  : 4
 URL      : http://ftp.gnome.org/pub/GNOME/sources/rest/0.8/rest-0.8.0.tar.xz
 Source0  : http://ftp.gnome.org/pub/GNOME/sources/rest/0.8/rest-0.8.0.tar.xz
 Source99 : http://ftp.gnome.org/pub/GNOME/sources/rest/0.8/rest-0.8.0.tar.xz.asc
