@@ -6,7 +6,7 @@
 #
 Name     : rest
 Version  : 0.8.0
-Release  : 4
+Release  : 5
 URL      : http://ftp.gnome.org/pub/GNOME/sources/rest/0.8/rest-0.8.0.tar.xz
 Source0  : http://ftp.gnome.org/pub/GNOME/sources/rest/0.8/rest-0.8.0.tar.xz
 Source99 : http://ftp.gnome.org/pub/GNOME/sources/rest/0.8/rest-0.8.0.tar.xz.asc
@@ -109,9 +109,12 @@ cp -a rest-0.8.0 build32
 popd
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1491326624
-%configure --disable-static --with-ca-certificates=/usr/share/ca-certs/
+export SOURCE_DATE_EPOCH=1506288290
+%configure --disable-static --with-ca-certificates=/var/cache/ca-certs/anchors
 make V=1  %{?_smp_mflags}
 
 pushd ../build32/
@@ -119,11 +122,11 @@ export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
 export LDFLAGS="$LDFLAGS -m32"
-%configure --disable-static --with-ca-certificates=/usr/share/ca-certs/   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+%configure --disable-static --with-ca-certificates=/var/cache/ca-certs/anchors   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make V=1  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1491326624
+export SOURCE_DATE_EPOCH=1506288290
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
