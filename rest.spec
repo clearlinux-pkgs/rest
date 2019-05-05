@@ -4,15 +4,16 @@
 #
 Name     : rest
 Version  : 0.8.1
-Release  : 8
+Release  : 9
 URL      : https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
 Source0  : https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
-Summary  : RESTful web api query library
+Summary  : Helper library for RESTful services
 Group    : Development/Tools
 License  : LGPL-2.1
-Requires: rest-data
-Requires: rest-lib
-Requires: rest-doc
+Requires: rest-data = %{version}-%{release}
+Requires: rest-lib = %{version}-%{release}
+Requires: rest-license = %{version}-%{release}
+BuildRequires : buildreq-gnome
 BuildRequires : ca-certs
 BuildRequires : docbook-xml
 BuildRequires : gcc-dev32
@@ -24,6 +25,7 @@ BuildRequires : gobject-introspection-dev
 BuildRequires : gtk-doc
 BuildRequires : gtk-doc-dev
 BuildRequires : libxslt-bin
+BuildRequires : pkg-config
 BuildRequires : pkgconfig(32glib-2.0)
 BuildRequires : pkgconfig(32gthread-2.0)
 BuildRequires : pkgconfig(32libsoup-2.4)
@@ -54,9 +56,10 @@ data components for the rest package.
 %package dev
 Summary: dev components for the rest package.
 Group: Development
-Requires: rest-lib
-Requires: rest-data
-Provides: rest-devel
+Requires: rest-lib = %{version}-%{release}
+Requires: rest-data = %{version}-%{release}
+Provides: rest-devel = %{version}-%{release}
+Requires: rest = %{version}-%{release}
 
 %description dev
 dev components for the rest package.
@@ -65,9 +68,9 @@ dev components for the rest package.
 %package dev32
 Summary: dev32 components for the rest package.
 Group: Default
-Requires: rest-lib32
-Requires: rest-data
-Requires: rest-dev
+Requires: rest-lib32 = %{version}-%{release}
+Requires: rest-data = %{version}-%{release}
+Requires: rest-dev = %{version}-%{release}
 
 %description dev32
 dev32 components for the rest package.
@@ -84,7 +87,8 @@ doc components for the rest package.
 %package lib
 Summary: lib components for the rest package.
 Group: Libraries
-Requires: rest-data
+Requires: rest-data = %{version}-%{release}
+Requires: rest-license = %{version}-%{release}
 
 %description lib
 lib components for the rest package.
@@ -93,10 +97,19 @@ lib components for the rest package.
 %package lib32
 Summary: lib32 components for the rest package.
 Group: Default
-Requires: rest-data
+Requires: rest-data = %{version}-%{release}
+Requires: rest-license = %{version}-%{release}
 
 %description lib32
 lib32 components for the rest package.
+
+
+%package license
+Summary: license components for the rest package.
+Group: Default
+
+%description license
+license components for the rest package.
 
 
 %prep
@@ -110,21 +123,31 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1508272494
+export SOURCE_DATE_EPOCH=1557023376
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static --with-ca-certificates=/var/cache/ca-certs/anchors
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-export LDFLAGS="$LDFLAGS -m32"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 %configure --disable-static --with-ca-certificates=/var/cache/ca-certs/anchors   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1508272494
+export SOURCE_DATE_EPOCH=1557023376
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/rest
+cp COPYING %{buildroot}/usr/share/package-licenses/rest/COPYING
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -181,7 +204,7 @@ popd
 /usr/lib32/pkgconfig/rest-extras-0.7.pc
 
 %files doc
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 /usr/share/gtk-doc/html/rest-0.7/FlickrProxy.html
 /usr/share/gtk-doc/html/rest-0.7/FlickrProxyCall.html
 /usr/share/gtk-doc/html/rest-0.7/LastfmProxy.html
@@ -225,3 +248,7 @@ popd
 /usr/lib32/librest-0.7.so.0.0.0
 /usr/lib32/librest-extras-0.7.so.0
 /usr/lib32/librest-extras-0.7.so.0.0.0
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/rest/COPYING
