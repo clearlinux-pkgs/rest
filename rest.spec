@@ -4,7 +4,7 @@
 #
 Name     : rest
 Version  : 0.8.1
-Release  : 10
+Release  : 11
 URL      : https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
 Source0  : https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
 Summary  : RESTful web api query library
@@ -114,6 +114,7 @@ license components for the rest package.
 
 %prep
 %setup -q -n rest-0.8.1
+cd %{_builddir}/rest-0.8.1
 pushd ..
 cp -a rest-0.8.1 build32
 popd
@@ -123,7 +124,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568875649
+export SOURCE_DATE_EPOCH=1583256876
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -132,7 +133,7 @@ export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
-%configure --disable-static --with-ca-certificates=/var/cache/ca-certs/anchors
+%configure --disable-static --with-ca-certificates=/var/cache/ca-certs/compat/ca-roots.pem
 make  %{?_smp_mflags}
 
 pushd ../build32/
@@ -141,14 +142,14 @@ export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-%configure --disable-static --with-ca-certificates=/var/cache/ca-certs/anchors   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+%configure --disable-static --with-ca-certificates=/var/cache/ca-certs/compat/ca-roots.pem   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1568875649
+export SOURCE_DATE_EPOCH=1583256876
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/rest
-cp COPYING %{buildroot}/usr/share/package-licenses/rest/COPYING
+cp %{_builddir}/rest-0.8.1/COPYING %{buildroot}/usr/share/package-licenses/rest/9a1929f4700d2407c70b507b3b2aaf6226a9543c
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -252,4 +253,4 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/rest/COPYING
+/usr/share/package-licenses/rest/9a1929f4700d2407c70b507b3b2aaf6226a9543c
