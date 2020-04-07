@@ -4,7 +4,7 @@
 #
 Name     : rest
 Version  : 0.8.1
-Release  : 11
+Release  : 12
 URL      : https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
 Source0  : https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
 Summary  : RESTful web api query library
@@ -124,14 +124,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1583256876
+export SOURCE_DATE_EPOCH=1586243366
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static --with-ca-certificates=/var/cache/ca-certs/compat/ca-roots.pem
 make  %{?_smp_mflags}
@@ -146,7 +146,7 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1583256876
+export SOURCE_DATE_EPOCH=1586243366
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/rest
 cp %{_builddir}/rest-0.8.1/COPYING %{buildroot}/usr/share/package-licenses/rest/9a1929f4700d2407c70b507b3b2aaf6226a9543c
