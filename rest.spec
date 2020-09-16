@@ -4,7 +4,7 @@
 #
 Name     : rest
 Version  : 0.8.1
-Release  : 12
+Release  : 13
 URL      : https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
 Source0  : https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
 Summary  : RESTful web api query library
@@ -16,20 +16,11 @@ Requires: rest-license = %{version}-%{release}
 BuildRequires : buildreq-gnome
 BuildRequires : ca-certs
 BuildRequires : docbook-xml
-BuildRequires : gcc-dev32
-BuildRequires : gcc-libgcc32
-BuildRequires : gcc-libstdc++32
-BuildRequires : glibc-dev32
-BuildRequires : glibc-libc32
 BuildRequires : gobject-introspection-dev
 BuildRequires : gtk-doc
 BuildRequires : gtk-doc-dev
 BuildRequires : libxslt-bin
 BuildRequires : pkg-config
-BuildRequires : pkgconfig(32glib-2.0)
-BuildRequires : pkgconfig(32gthread-2.0)
-BuildRequires : pkgconfig(32libsoup-2.4)
-BuildRequires : pkgconfig(32libxml-2.0)
 BuildRequires : pkgconfig(glib-2.0)
 BuildRequires : pkgconfig(gthread-2.0)
 BuildRequires : pkgconfig(libsoup-2.4)
@@ -65,17 +56,6 @@ Requires: rest = %{version}-%{release}
 dev components for the rest package.
 
 
-%package dev32
-Summary: dev32 components for the rest package.
-Group: Default
-Requires: rest-lib32 = %{version}-%{release}
-Requires: rest-data = %{version}-%{release}
-Requires: rest-dev = %{version}-%{release}
-
-%description dev32
-dev32 components for the rest package.
-
-
 %package doc
 Summary: doc components for the rest package.
 Group: Documentation
@@ -94,16 +74,6 @@ Requires: rest-license = %{version}-%{release}
 lib components for the rest package.
 
 
-%package lib32
-Summary: lib32 components for the rest package.
-Group: Default
-Requires: rest-data = %{version}-%{release}
-Requires: rest-license = %{version}-%{release}
-
-%description lib32
-lib32 components for the rest package.
-
-
 %package license
 Summary: license components for the rest package.
 Group: Default
@@ -115,16 +85,13 @@ license components for the rest package.
 %prep
 %setup -q -n rest-0.8.1
 cd %{_builddir}/rest-0.8.1
-pushd ..
-cp -a rest-0.8.1 build32
-popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1586243366
+export SOURCE_DATE_EPOCH=1600270546
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -136,35 +103,15 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static --with-ca-certificates=/var/cache/ca-certs/compat/ca-roots.pem
 make  %{?_smp_mflags}
 
-pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-%configure --disable-static --with-ca-certificates=/var/cache/ca-certs/compat/ca-roots.pem   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
-make  %{?_smp_mflags}
-popd
 %install
-export SOURCE_DATE_EPOCH=1586243366
+export SOURCE_DATE_EPOCH=1600270546
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/rest
 cp %{_builddir}/rest-0.8.1/COPYING %{buildroot}/usr/share/package-licenses/rest/9a1929f4700d2407c70b507b3b2aaf6226a9543c
-pushd ../build32/
-%make_install32
-if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
-then
-pushd %{buildroot}/usr/lib32/pkgconfig
-for i in *.pc ; do ln -s $i 32$i ; done
-popd
-fi
-popd
 %make_install
 
 %files
 %defattr(-,root,root,-)
-/usr/lib32/girepository-1.0/Rest-0.7.typelib
-/usr/lib32/girepository-1.0/RestExtras-0.7.typelib
 
 %files data
 %defattr(-,root,root,-)
@@ -195,15 +142,6 @@ popd
 /usr/lib64/librest-extras-0.7.so
 /usr/lib64/pkgconfig/rest-0.7.pc
 /usr/lib64/pkgconfig/rest-extras-0.7.pc
-
-%files dev32
-%defattr(-,root,root,-)
-/usr/lib32/librest-0.7.so
-/usr/lib32/librest-extras-0.7.so
-/usr/lib32/pkgconfig/32rest-0.7.pc
-/usr/lib32/pkgconfig/32rest-extras-0.7.pc
-/usr/lib32/pkgconfig/rest-0.7.pc
-/usr/lib32/pkgconfig/rest-extras-0.7.pc
 
 %files doc
 %defattr(0644,root,root,0755)
@@ -243,13 +181,6 @@ popd
 /usr/lib64/librest-0.7.so.0.0.0
 /usr/lib64/librest-extras-0.7.so.0
 /usr/lib64/librest-extras-0.7.so.0.0.0
-
-%files lib32
-%defattr(-,root,root,-)
-/usr/lib32/librest-0.7.so.0
-/usr/lib32/librest-0.7.so.0.0.0
-/usr/lib32/librest-extras-0.7.so.0
-/usr/lib32/librest-extras-0.7.so.0.0.0
 
 %files license
 %defattr(0644,root,root,0755)
