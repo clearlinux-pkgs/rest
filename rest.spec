@@ -4,7 +4,7 @@
 #
 Name     : rest
 Version  : 0.8.1
-Release  : 13
+Release  : 14
 URL      : https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
 Source0  : https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
 Summary  : RESTful web api query library
