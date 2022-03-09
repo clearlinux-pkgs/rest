@@ -4,13 +4,14 @@
 #
 Name     : rest
 Version  : 0.9.0
-Release  : 15
+Release  : 16
 URL      : https://download.gnome.org/sources/rest/0.9/rest-0.9.0.tar.xz
 Source0  : https://download.gnome.org/sources/rest/0.9/rest-0.9.0.tar.xz
 Summary  : RESTful web api query library
 Group    : Development/Tools
 License  : LGPL-2.1
 Requires: rest-data = %{version}-%{release}
+Requires: rest-filemap = %{version}-%{release}
 Requires: rest-lib = %{version}-%{release}
 Requires: rest-license = %{version}-%{release}
 BuildRequires : buildreq-gnome
@@ -51,11 +52,20 @@ Requires: rest = %{version}-%{release}
 dev components for the rest package.
 
 
+%package filemap
+Summary: filemap components for the rest package.
+Group: Default
+
+%description filemap
+filemap components for the rest package.
+
+
 %package lib
 Summary: lib components for the rest package.
 Group: Libraries
 Requires: rest-data = %{version}-%{release}
 Requires: rest-license = %{version}-%{release}
+Requires: rest-filemap = %{version}-%{release}
 
 %description lib
 lib components for the rest package.
@@ -72,13 +82,16 @@ license components for the rest package.
 %prep
 %setup -q -n rest-0.9.0
 cd %{_builddir}/rest-0.9.0
+pushd ..
+cp -a rest-0.9.0 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1646842552
+export SOURCE_DATE_EPOCH=1646842774
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -90,11 +103,16 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Dca_certificates_path=/var/cache/ca-certs/compat/ca-roots.pem \
 -Dgtk_doc=false  builddir
 ninja -v -C builddir
+CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 -O3" CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 " LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Dca_certificates_path=/var/cache/ca-certs/compat/ca-roots.pem \
+-Dgtk_doc=false  builddiravx2
+ninja -v -C builddiravx2
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/rest
 cp %{_builddir}/rest-0.9.0/COPYING %{buildroot}/usr/share/package-licenses/rest/9a1929f4700d2407c70b507b3b2aaf6226a9543c
+DESTDIR=%{buildroot}-v3 ninja -C builddiravx2 install
 DESTDIR=%{buildroot} ninja -C builddir install
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -132,12 +150,17 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/lib64/pkgconfig/rest-1.0.pc
 /usr/lib64/pkgconfig/rest-extras-1.0.pc
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-rest
+
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/librest-1.0.so.0
 /usr/lib64/librest-1.0.so.0.0.0
 /usr/lib64/librest-extras-1.0.so.0
 /usr/lib64/librest-extras-1.0.so.0.0.0
+/usr/share/clear/optimized-elf/lib*
 
 %files license
 %defattr(0644,root,root,0755)
