@@ -1,2 +1,5 @@
-0.8.1
-pkg-config
+0.9.0
+json-glib-dev
+libsoup-dev
+pkgconfig(json-glib-1.0)
+pkgconfig(libsoup-2.4)
