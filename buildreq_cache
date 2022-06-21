@@ -1,5 +1,6 @@
-0.9.0
+0.9.1
 json-glib-dev
-libsoup-dev
+pkgconfig(gtksourceview-5)
 pkgconfig(json-glib-1.0)
-pkgconfig(libsoup-2.4)
+pkgconfig(libadwaita-1)
+pkgconfig(libsoup-3.0)
