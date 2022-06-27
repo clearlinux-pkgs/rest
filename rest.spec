@@ -4,7 +4,7 @@
 #
 Name     : rest
 Version  : 0.9.1
-Release  : 17
+Release  : 18
 URL      : https://download.gnome.org/sources/rest/0.9/rest-0.9.1.tar.xz
 Source0  : https://download.gnome.org/sources/rest/0.9/rest-0.9.1.tar.xz
 Summary  : RESTful web api query library
@@ -104,7 +104,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1655825437
+export SOURCE_DATE_EPOCH=1656364538
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -162,6 +162,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/include/rest-1.0/rest/rest-xml-node.h
 /usr/include/rest-1.0/rest/rest-xml-parser.h
 /usr/include/rest-1.0/rest/rest.h
+/usr/lib64/glibc-hwcaps/x86-64-v3/librest-1.0.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/librest-extras-1.0.so
 /usr/lib64/librest-1.0.so
 /usr/lib64/librest-extras-1.0.so
 /usr/lib64/pkgconfig/rest-1.0.pc
@@ -173,10 +175,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/glibc-hwcaps/x86-64-v3/librest-1.0.so
 /usr/lib64/glibc-hwcaps/x86-64-v3/librest-1.0.so.0
 /usr/lib64/glibc-hwcaps/x86-64-v3/librest-1.0.so.0.0.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/librest-extras-1.0.so
 /usr/lib64/glibc-hwcaps/x86-64-v3/librest-extras-1.0.so.0
 /usr/lib64/glibc-hwcaps/x86-64-v3/librest-extras-1.0.so.0.0.0
 /usr/lib64/librest-1.0.so.0
