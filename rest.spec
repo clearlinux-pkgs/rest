@@ -4,7 +4,7 @@
 #
 Name     : rest
 Version  : 0.9.1
-Release  : 23
+Release  : 24
 URL      : https://download.gnome.org/sources/rest/0.9/rest-0.9.1.tar.xz
 Source0  : https://download.gnome.org/sources/rest/0.9/rest-0.9.1.tar.xz
 Summary  : RESTful web api query library
@@ -104,7 +104,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656364538
+export SOURCE_DATE_EPOCH=1664161996
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -122,7 +122,7 @@ ninja -v -C builddiravx2
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/rest
-cp %{_builddir}/rest-0.9.1/COPYING %{buildroot}/usr/share/package-licenses/rest/9a1929f4700d2407c70b507b3b2aaf6226a9543c
+cp %{_builddir}/rest-%{version}/COPYING %{buildroot}/usr/share/package-licenses/rest/9a1929f4700d2407c70b507b3b2aaf6226a9543c || :
 DESTDIR=%{buildroot}-v3 ninja -C builddiravx2 install
 DESTDIR=%{buildroot} ninja -C builddir install
 /usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
