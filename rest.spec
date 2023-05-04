@@ -5,7 +5,7 @@
 #
 Name     : rest
 Version  : 0.9.1
-Release  : 27
+Release  : 28
 URL      : https://download.gnome.org/sources/rest/0.9/rest-0.9.1.tar.xz
 Source0  : https://download.gnome.org/sources/rest/0.9/rest-0.9.1.tar.xz
 Summary  : RESTful web api query library
@@ -13,7 +13,6 @@ Group    : Development/Tools
 License  : LGPL-2.1
 Requires: rest-bin = %{version}-%{release}
 Requires: rest-data = %{version}-%{release}
-Requires: rest-filemap = %{version}-%{release}
 Requires: rest-lib = %{version}-%{release}
 Requires: rest-license = %{version}-%{release}
 BuildRequires : buildreq-gnome
@@ -42,7 +41,6 @@ Summary: bin components for the rest package.
 Group: Binaries
 Requires: rest-data = %{version}-%{release}
 Requires: rest-license = %{version}-%{release}
-Requires: rest-filemap = %{version}-%{release}
 
 %description bin
 bin components for the rest package.
@@ -69,20 +67,11 @@ Requires: rest = %{version}-%{release}
 dev components for the rest package.
 
 
-%package filemap
-Summary: filemap components for the rest package.
-Group: Default
-
-%description filemap
-filemap components for the rest package.
-
-
 %package lib
 Summary: lib components for the rest package.
 Group: Libraries
 Requires: rest-data = %{version}-%{release}
 Requires: rest-license = %{version}-%{release}
-Requires: rest-filemap = %{version}-%{release}
 
 %description lib
 lib components for the rest package.
@@ -108,15 +97,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1680041987
+export SOURCE_DATE_EPOCH=1683227738
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Dca_certificates_path=/var/cache/ca-certs/compat/ca-roots.pem \
 -Dgtk_doc=false  builddir
 ninja -v -C builddir
@@ -136,8 +125,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 
 %files bin
 %defattr(-,root,root,-)
+/V3/usr/bin/librest-demo
 /usr/bin/librest-demo
-/usr/share/clear/optimized-elf/bin*
 
 %files data
 %defattr(-,root,root,-)
@@ -148,6 +137,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 
 %files dev
 %defattr(-,root,root,-)
+/V3/usr/lib64/librest-1.0.so
+/V3/usr/lib64/librest-extras-1.0.so
 /usr/include/rest-1.0/rest-extras/flickr-proxy-call.h
 /usr/include/rest-1.0/rest-extras/flickr-proxy.h
 /usr/include/rest-1.0/rest-extras/lastfm-proxy-call.h
@@ -166,23 +157,17 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/include/rest-1.0/rest/rest-xml-node.h
 /usr/include/rest-1.0/rest/rest-xml-parser.h
 /usr/include/rest-1.0/rest/rest.h
-/usr/lib64/glibc-hwcaps/x86-64-v3/librest-1.0.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/librest-extras-1.0.so
 /usr/lib64/librest-1.0.so
 /usr/lib64/librest-extras-1.0.so
 /usr/lib64/pkgconfig/rest-1.0.pc
 /usr/lib64/pkgconfig/rest-extras-1.0.pc
 
-%files filemap
-%defattr(-,root,root,-)
-/usr/share/clear/filemap/filemap-rest
-
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/glibc-hwcaps/x86-64-v3/librest-1.0.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/librest-1.0.so.0.0.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/librest-extras-1.0.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/librest-extras-1.0.so.0.0.0
+/V3/usr/lib64/librest-1.0.so.0
+/V3/usr/lib64/librest-1.0.so.0.0.0
+/V3/usr/lib64/librest-extras-1.0.so.0
+/V3/usr/lib64/librest-extras-1.0.so.0.0.0
 /usr/lib64/librest-1.0.so.0
 /usr/lib64/librest-1.0.so.0.0.0
 /usr/lib64/librest-extras-1.0.so.0
