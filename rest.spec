@@ -5,7 +5,7 @@
 #
 Name     : rest
 Version  : 0.9.1
-Release  : 28
+Release  : 29
 URL      : https://download.gnome.org/sources/rest/0.9/rest-0.9.1.tar.xz
 Source0  : https://download.gnome.org/sources/rest/0.9/rest-0.9.1.tar.xz
 Summary  : RESTful web api query library
@@ -97,7 +97,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1683227738
+export SOURCE_DATE_EPOCH=1685509535
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -137,8 +137,6 @@ DESTDIR=%{buildroot} ninja -C builddir install
 
 %files dev
 %defattr(-,root,root,-)
-/V3/usr/lib64/librest-1.0.so
-/V3/usr/lib64/librest-extras-1.0.so
 /usr/include/rest-1.0/rest-extras/flickr-proxy-call.h
 /usr/include/rest-1.0/rest-extras/flickr-proxy.h
 /usr/include/rest-1.0/rest-extras/lastfm-proxy-call.h
@@ -164,9 +162,7 @@ DESTDIR=%{buildroot} ninja -C builddir install
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/librest-1.0.so.0
 /V3/usr/lib64/librest-1.0.so.0.0.0
-/V3/usr/lib64/librest-extras-1.0.so.0
 /V3/usr/lib64/librest-extras-1.0.so.0.0.0
 /usr/lib64/librest-1.0.so.0
 /usr/lib64/librest-1.0.so.0.0.0
